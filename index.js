@@ -1,7 +1,6 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-// const router = require("./event/router");
+// const cors = require("cors");
+const router = require("./message/router");
 
 // // const ventRouter = require("./vent/router");
 // // const roomRouter = require("./room/router");
@@ -9,19 +8,21 @@ const cors = require("cors");
 const app = express();
 const port = 4000;
 
-// // const db = require("./db.js");
+// const db = require("./db.js"); // just for testing, should be in router
+// const Message = require("./message/model"); // just for testing, should be in router
+// app.use(Message, db); // just for testing, should be in router
 
 // const corsMiddleware = cors();
 // app.use(corsMiddleware);
 
-// const parserMiddleware = bodyParser.json();
-// app.use(parserMiddleware);
+const jsonMiddleware = express.json();
+app.use(jsonMiddleware);
 
-// // app.use(ventRouter);
-// // app.use(roomRouter);
-// app.use(router);
+app.use(router);
 
-// const Event = require("./event/model");
-// // app.use(Event, db);
+// app.post("./message", function(req, res) {
+//   const { body } = req;
+//   console.log("req.body test", body);
+// });
 
 app.listen(port, () => console.log(`Listening on :${port}`));
