@@ -8,9 +8,15 @@ const stream = new Sse();
 
 const router = Router();
 
-router.get("/stream", (request, response, next) => {
-  stream.updateInit("test");
-  stream.init(request, response);
+router.get("/stream", async (request, response, next) => {
+  try {
+    const message = await Message.findAll();
+    const json = JSON.stringify(message);
+    stream.updateInit(json);
+    stream.init(request, response);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get("/message", async function(request, response, next) {
@@ -29,6 +35,8 @@ router.post("/message", async function(request, response, next) {
     // const entity = { text };
     // const message = await Message.create(entity);
     const message = await Message.create(request.body);
+    const json = JSON.stringify(message);
+    stream.send(json);
     response.send(message);
     // console.log(message.dataValues);
   } catch (error) {
