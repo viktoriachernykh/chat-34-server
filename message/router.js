@@ -5,6 +5,15 @@ const { Router } = express;
 
 const router = Router();
 
+router.get("/message", async function(request, response, next) {
+  try {
+    const message = await Message.findAll();
+    response.send(message);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/message", async function(request, response, next) {
   try {
     const { body } = request;
